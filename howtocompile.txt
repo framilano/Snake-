@@ -1,0 +1,6 @@
+You sfml libs
+sudo apt install libsfml-dev
+
+Compile with this command
+g++ snake.cpp -lsfml-graphics -lsfml-window -lsfml-system -o snake
+
