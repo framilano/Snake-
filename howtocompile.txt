@@ -1,6 +1,8 @@
-You sfml libs
+You need sfml libs, on Ubuntu:
 sudo apt install libsfml-dev
 
-Compile with this command
+Compile snake with this command:
 g++ snake.cpp -lsfml-graphics -lsfml-window -lsfml-system -o snake
 
+Execute it with:
+./snake
