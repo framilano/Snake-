@@ -2,7 +2,7 @@ You need sfml libs, on Ubuntu:
 sudo apt install libsfml-dev
 
 Compile snake with this command:
-g++ snake.cpp -lsfml-graphics -lsfml-window -lsfml-system -o snake
+g++ snakeplusplus.cpp -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -o snakeplusplus
 
 Execute it with:
-./snake
+./snakeplusplus

@@ -79,7 +79,7 @@ void increase_score(std::vector<sf::Sprite> &character, sf::Texture &char_textur
     score.setString("Score  " + std::to_string(score_int));
     if (score_int > record_int) {
         record_int = score_int;
-        record.setString("Record: " + std::to_string(record_int));
+        record.setString("Record " + std::to_string(record_int));
     }
     sf::Sprite new_piece;
     new_piece.setOrigin(PG_LENGTH/2, PG_LENGTH/2);
