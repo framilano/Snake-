@@ -3,12 +3,8 @@
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
+#include "scenes.h"
 
-#define WIN_WIDTH 1920
-#define WIN_HEIGHT 1080
-#define GF_LENGTH 700
-#define PG_LENGTH 70
-#define POS 10
 /**
 * Checking and teleporting the player if he goes over game field limits
 *  @param character first element of the character array 
@@ -72,8 +68,8 @@ void spawn_apple(std::vector<std::vector<sf::Vector2f>> &food_positions, std::ve
 *   @param  score_int current score int variable
 *   @param  hit_sound sf::Sound with hit sound inside
 **/
-void increase_score(std::vector<sf::Sprite> &character, sf::Texture &char_texture, sf::Text &record, int &record_int,
- sf::Text &score, int &score_int, sf::Sound &hit_sound) {
+void increase_score(std::vector<sf::Sprite> &character, sf::Text &record, int &record_int,
+ sf::Text &score, int &score_int, sf::Sound &hit_sound, sf::Texture &body_texture, sf::Texture &tail_texture) {
     hit_sound.play();
     score_int += 1;
     score.setString("Score  " + std::to_string(score_int));
@@ -81,9 +77,12 @@ void increase_score(std::vector<sf::Sprite> &character, sf::Texture &char_textur
         record_int = score_int;
         record.setString("Record " + std::to_string(record_int));
     }
+
+    for (int i = 1; i < character.size(); i++) character[i].setTexture(body_texture);
+
     sf::Sprite new_piece;
     new_piece.setOrigin(PG_LENGTH/2, PG_LENGTH/2);
-    new_piece.setTexture(char_texture);
+    new_piece.setTexture(tail_texture);
     new_piece.setPosition(sf::Vector2f(-PG_LENGTH/2, -PG_LENGTH/2));
     character.push_back(new_piece);
     return;
@@ -163,63 +162,11 @@ void update_record(int &record_int) {
     return;
 }
 
-void welcome_scene(sf::RenderWindow &window, sf::RectangleShape &background, sf::Font &eightbit_font) {
-    sf::Event event;
-    sf::Text title_msg("SnakePlusPlus", eightbit_font, 100);
-    sf::Text enter_msg("Press Enter to play\nPress ESC to exit", eightbit_font, 70);
-    title_msg.setOrigin(sf::Vector2f(title_msg.getLocalBounds().width/2, title_msg.getLocalBounds().height/2));
-    title_msg.setPosition(sf::Vector2f(WIN_WIDTH/2, WIN_HEIGHT*0.3));
-    enter_msg.setOrigin(sf::Vector2f(enter_msg.getLocalBounds().width/2, enter_msg.getLocalBounds().height/2));
-    enter_msg.setPosition(sf::Vector2f(WIN_WIDTH/2, WIN_HEIGHT/1.5));
-    window.draw(background);
-    window.draw(enter_msg);
-    window.draw(title_msg);
-    window.display();
-    while (window.waitEvent(event)) {
-        if (event.type == sf::Event::Closed || event.key.code == sf::Keyboard::Escape) window.close();
-        if (event.type == sf::Event::Closed || event.key.code == sf::Keyboard::Enter) break;
-    }
-}
-
-void pause_scene(sf::RenderWindow &window, sf::Music &astro_music, sf::Font &eightbit_font) {
-    astro_music.pause();
-    sf::Event event;
-    sf::Text pause_msg("Pause", eightbit_font, 100);
-    pause_msg.setOrigin(sf::Vector2f(pause_msg.getLocalBounds().width/2, pause_msg.getLocalBounds().height/2));
-    pause_msg.setPosition(sf::Vector2f(WIN_WIDTH/2, WIN_HEIGHT*0.3));
-    window.draw(pause_msg);
-    window.display();
-    while (window.waitEvent(event)) {
-        if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::P) break;
-        if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Escape) window.close();
-    }
-    window.clear();
-    astro_music.play();
-    return;
-}
-
-void lost_scene(sf::RenderWindow &window, sf::Music &astro_music, sf::Font &eightbit_font, 
- std::vector<sf::Sprite> &character, int &score_int, sf::Text &score) {
-    astro_music.pause();
-    sf::Event event;
-    sf::Text lost_msg("You lost\n\nPress R to retry or ESC to exit", eightbit_font, 50);
-    lost_msg.setOrigin(sf::Vector2f(lost_msg.getLocalBounds().width/2, lost_msg.getLocalBounds().height/2));
-    lost_msg.setPosition(sf::Vector2f(WIN_WIDTH/2, WIN_HEIGHT*0.3));
-    window.draw(lost_msg);
-    window.display();
-    while (window.waitEvent(event)) {
-        if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::R) break;
-        if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Escape) window.close();
-    }
-    window.clear();
-    restart_game(character, score_int, score, astro_music);
-    return;
-}
 
 int main() {
 
     //Window, background and font
-    sf::RenderWindow window(sf::VideoMode(WIN_WIDTH, WIN_HEIGHT), "SnakePlusPlus", sf::Style::Fullscreen);
+    sf::RenderWindow window(sf::VideoMode(WIN_WIDTH, WIN_HEIGHT), "SnakePlusPlus");
     sf::RectangleShape background(sf::Vector2f(WIN_WIDTH, WIN_HEIGHT));
     sf::Texture background_texture;
     sf::Font eightbit_font;
@@ -253,14 +200,20 @@ int main() {
     astro_music.play();
     astro_music.setLoop(true);
 
-    //Character    
+    //Character
+    sf::Texture tail_texture;
+    sf::Texture body_texture;
     sf::Texture char_texture;
     sf::Texture food_texture;
     std::vector<sf::Sprite> character(1);
     sf::Sprite food;
-    char_texture.loadFromFile("../assets/kiss.png");
+    char_texture.loadFromFile("../assets/head.png");
     char_texture.setSmooth(true);
     character.front().setOrigin(PG_LENGTH/2, PG_LENGTH/2);
+    body_texture.loadFromFile("../assets/body.png");
+    body_texture.setSmooth(true);
+    tail_texture.loadFromFile("../assets/tail.png");
+    tail_texture.setSmooth(true);
     character.front().setTexture(char_texture);
     character.front().setPosition(sf::Vector2f(WIN_WIDTH/2 - GF_LENGTH/2 + PG_LENGTH/2, WIN_HEIGHT/2 - GF_LENGTH/2 + PG_LENGTH/2));
 
@@ -323,12 +276,14 @@ int main() {
         //Spawn apple if hitting one
         if ((food.getPosition().x == character.front().getPosition().x) && (food.getPosition().y == character.front().getPosition().y)){
             spawn_apple(food_positions, character, food);
-            increase_score(character, char_texture, record, record_int, score, score_int, hit_sound);
+            increase_score(character, record, record_int, score, score_int, hit_sound, body_texture, tail_texture);
         }
 
         if(check_collision(character)) {
             update_record(record_int);
-            lost_scene(window, astro_music, eightbit_font, character, score_int, score);
+            if(lost_scene(window, astro_music, eightbit_font, character, score_int, score)) window.close();
+            else restart_game(character, score_int, score, astro_music);
+            
         }
 
         window.clear();
