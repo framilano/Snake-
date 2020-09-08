@@ -165,8 +165,7 @@ void update_record(int &record_int) {
 int main() {
 
     //Window, background and font
-    sf::RenderWindow window(sf::VideoMode(WIN_WIDTH, WIN_HEIGHT), "SnakePlusPlus", sf::Style::Fullscreen);
-    window.setFramerateLimit(60);
+    sf::RenderWindow window(sf::VideoMode(WIN_WIDTH, WIN_HEIGHT), "SnakePlusPlus", sf::Style::Default);
     sf::RectangleShape background(sf::Vector2f(WIN_WIDTH, WIN_HEIGHT));
     sf::Texture background_texture;
     sf::Font eightbit_font;
