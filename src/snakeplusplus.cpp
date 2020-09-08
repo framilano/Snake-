@@ -21,7 +21,6 @@ void check_boundaries(sf::Sprite &character) {
 *   Generates possible food position in a matric of sf::Vector2f
 *   @return the matrix
 **/
-
 std::vector<std::vector<sf::Vector2f>> generate_food_positions() {
     std::vector<std::vector<sf::Vector2f>> positions_matrix(10, std::vector<sf::Vector2f>(10));
     int begin_x = WIN_WIDTH/2 - GF_LENGTH/2 + PG_LENGTH/2;
