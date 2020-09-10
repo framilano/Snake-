@@ -134,11 +134,11 @@ void restart_game(std::vector<sf::Sprite> &character, int &score_int, sf::Text &
 **/
 int parse_record() {
     std::fstream record_file;
-    record_file.open("record.txt", std::ios::out | std::ios::in);
+    record_file.open("../configs/record.txt", std::ios::out | std::ios::in);
     if(record_file.fail()) {
         std::cout << "Non esiste record.txt\n";
         record_file.close();
-        record_file.open("record.txt", std::fstream::out);
+        record_file.open("../configs/record.txt", std::fstream::out);
         record_file << "0";
         record_file.close();
         return 0;
@@ -155,7 +155,7 @@ int parse_record() {
 **/
 void update_record(int &record_int) {
     std::fstream record_file;
-    record_file.open("record.txt", std::fstream::out | std::fstream::trunc);
+    record_file.open("../configs/record.txt", std::fstream::out | std::fstream::trunc);
     record_file << std::to_string(record_int);
     record_file.close();
     return;
