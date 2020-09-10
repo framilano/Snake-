@@ -1,8 +1,0 @@
-You need sfml libs, on Ubuntu:
-sudo apt install libsfml-dev
-
-Compile snake with this command:
-g++ snakeplusplus.cpp scenes.cpp headers/scenes.hpp -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -o ../release/snakeplusplus_ubuntu
-
-Execute it with:
-./snakeplusplus_ubuntu
