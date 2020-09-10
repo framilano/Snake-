@@ -3,7 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
-#include "scenes.h"
+#include "headers/scenes.h"
 
 /**
 * Checking and teleporting the player if he goes over game field limits

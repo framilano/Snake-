@@ -2,7 +2,7 @@
 #include <SFML/Audio.hpp>
 #include <iostream>
 #include <fstream>
-#include "scenes.h"
+#include "headers/scenes.h"
 
 void welcome_scene(sf::RenderWindow &window, sf::RectangleShape &background, sf::Font &eightbit_font) {
     sf::Event event;
