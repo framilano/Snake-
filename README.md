@@ -1,6 +1,9 @@
 # User Input
+
 ESC - exit the game
+
 P - pause the game
+
 R - restart the game (ignoring score and record)
 
 # Compiling: Ubuntu
