@@ -22,7 +22,6 @@ sudo apt install libsfml-dev
 3. Compile snakeplusplus opening a terminal inside src/:
 ```
 g++ scenes.cpp headers/scenes.h snakeplusplus.cpp -lsfml-audio -lsfml-graphics -lsfml-system -lsfml-window -o snakeplusplus
-
 ```
 4. You need to place the compiled executable near assets and configs folders to run it, like this
 ![Folders placement example](https://i.imgur.com/73hCPWa.png)
