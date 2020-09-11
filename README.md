@@ -1,3 +1,6 @@
+# SnakePlusPLus
+![In-game screenshot](https://i.imgur.com/uuxV2kT.png)
+
 # User Input
 
 **ESC** - exit the game
