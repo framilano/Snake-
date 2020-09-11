@@ -30,6 +30,8 @@ g++ scenes.cpp headers/scenes.h snakeplusplus.cpp -lsfml-audio -lsfml-graphics -
 To compile SnakePlusPlus I highly suggest to use Visual Studio 2019
 1. Create a new empty C++ project in Visual Studio, include and link the SFML libraries (using [this](https://www.sfml-dev.org/tutorials/2.5/start-vc.php) guide)
 2. Inside your project's root folder copy assets, configs and src folders
+![Folders' structure example](https://i.imgur.com/v0lxSB5.png)
 3. Add snakeplusplus.cpp and scenes.cpp to source files in VS, add scenes.h to headers files in VS
+![Solution Explorer](https://i.imgur.com/M6nKAjL.png)
 4. Run in Release x86 mode after compiling the project, the new compiled executable will now appear in \Release
 5. Add next to the executable both assets and configs folders
