@@ -10,7 +10,7 @@
 **R** - restart the game (ignoring score and record)
 
 # Compiling: Ubuntu
-1.Clone this repo
+1. Clone this repo
 ```
 git clone https://github.com/framilano/SnakePlusPlus.git
 ```
