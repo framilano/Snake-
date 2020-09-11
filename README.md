@@ -9,7 +9,7 @@
 
 **R** - restart the game (ignoring score and record)
 
-## Compiling: Ubuntu
+## Build Instructions: Ubuntu
 1. Clone this repo
 ```
 git clone https://github.com/framilano/SnakePlusPlus.git
@@ -26,7 +26,7 @@ g++ scenes.cpp headers/scenes.h snakeplusplus.cpp -lsfml-audio -lsfml-graphics -
 4. You need to place the compiled executable near assets and configs folders to run it, like this
 ![Folders placement example](https://i.imgur.com/73hCPWa.png)
 
-## Compiling: Windows
+## Build Instructions: Windows
 To compile SnakePlusPlus I highly suggest to use Visual Studio 2019
 1. Create a new empty C++ project in Visual Studio, include and link the SFML libraries (using [this](https://www.sfml-dev.org/tutorials/2.5/start-vc.php) guide)
 2. Inside your project's root folder copy assets, configs and src folders
