@@ -5,6 +5,7 @@
 #include "headers/scenes.h"
 
 void welcome_scene(sf::RenderWindow &window, sf::RectangleShape &background, sf::Font &eightbit_font) {
+    window.display();
     sf::Event event;
     sf::Text title_msg("SnakePlusPlus", eightbit_font, 100);
     sf::Text enter_msg("Press Enter to play\nPress ESC to exit", eightbit_font, 70);
@@ -23,6 +24,7 @@ void welcome_scene(sf::RenderWindow &window, sf::RectangleShape &background, sf:
 }
 
 void pause_scene(sf::RenderWindow &window, sf::Music &astro_music, sf::Font &eightbit_font) {
+    window.display();
     astro_music.pause();
     sf::Event event;
     sf::Text pause_msg("Pause", eightbit_font, 100);
@@ -41,6 +43,7 @@ void pause_scene(sf::RenderWindow &window, sf::Music &astro_music, sf::Font &eig
 
 int lost_scene(sf::RenderWindow &window, sf::Music &astro_music, sf::Font &eightbit_font, 
  std::vector<sf::Sprite> &character, int &score_int, sf::Text &score) {
+    window.display();
     astro_music.pause();
     sf::Event event;
     sf::Text lost_msg("You lost\n\nPress R to retry or ESC to exit", eightbit_font, 50);

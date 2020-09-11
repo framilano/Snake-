@@ -1,3 +1,7 @@
+#ifndef SCENES_H
+#define SCENES_H
+
+
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <iostream>
@@ -17,3 +21,5 @@ void pause_scene(sf::RenderWindow &window, sf::Music &astro_music, sf::Font &eig
 
 int lost_scene(sf::RenderWindow &window, sf::Music &astro_music, sf::Font &eightbit_font, 
  std::vector<sf::Sprite> &character, int &score_int, sf::Text &score);
+
+#endif
