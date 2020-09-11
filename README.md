@@ -1,4 +1,4 @@
-# SnakePlusPlus
+### SnakePlusPlus
 ![In-game screenshot](https://i.imgur.com/uuxV2kT.png)
 
 # User Input
