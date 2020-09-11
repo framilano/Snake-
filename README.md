@@ -32,6 +32,7 @@ g++ scenes.cpp headers/scenes.h snakeplusplus.cpp -lsfml-audio -lsfml-graphics -
 git clone https://github.com/framilano/SnakePlusPlus.git
 ```
 To build SnakePlusPlus I highly suggest to use Visual Studio 2019
+
 2. Create a new empty C++ project in Visual Studio, include and link the SFML libraries (using [this](https://www.sfml-dev.org/tutorials/2.5/start-vc.php) guide)
 3. Inside your project's root folder copy assets, configs and src folders
 ![Folders' structure example](https://i.imgur.com/v0lxSB5.png)
