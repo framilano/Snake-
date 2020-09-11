@@ -1,10 +1,10 @@
 # User Input
 
-ESC - exit the game
+**ESC** - exit the game
 
-P - pause the game
+**P** - pause the game
 
-R - restart the game (ignoring score and record)
+**R** - restart the game (ignoring score and record)
 
 # Compiling: Ubuntu
 1.Clone this repo
