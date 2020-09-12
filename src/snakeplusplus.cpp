@@ -1,8 +1,3 @@
-#include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
-#include <iostream>
-#include <fstream>
-#include <cstdlib>
 #include "headers/scenes.hpp"
 
 /**
@@ -25,8 +20,8 @@ std::vector<std::vector<sf::Vector2f>> generate_food_positions() {
     std::vector<std::vector<sf::Vector2f>> positions_matrix(10, std::vector<sf::Vector2f>(10));
     int begin_x = WIN_WIDTH / 2 - GF_LENGTH / 2 + PG_LENGTH / 2;
     int begin_y = WIN_HEIGHT / 2 - GF_LENGTH / 2 + PG_LENGTH / 2;
-    for (int i = 0; i < 10; i++) {
-        for (int j = 0; j < 10; j++) {
+    for (int i = 0; i < POS; i++) {
+        for (int j = 0; j < POS; j++) {
             positions_matrix[i][j].x = begin_x + j * PG_LENGTH;
             positions_matrix[i][j].y = begin_y + i * PG_LENGTH;
         }
@@ -230,8 +225,8 @@ int main() {
 
 
     //Score&Record
-    score.setPosition(sf::Vector2f(30, 30));
-    record.setPosition(sf::Vector2f(30, 90));
+    score.setPosition(sf::Vector2f(WIN_HEIGHT*0.1, WIN_HEIGHT*0.1));
+    record.setPosition(sf::Vector2f(WIN_HEIGHT*0.1, WIN_HEIGHT*0.2));
 
     //Generating food positions and spawning the first apple
     std::vector<std::vector<sf::Vector2f>> food_positions = generate_food_positions();
@@ -282,6 +277,7 @@ int main() {
         if ((food.getPosition().x == character.front().getPosition().x) && (food.getPosition().y == character.front().getPosition().y)) {
             spawn_apple(food_positions, character, food);
             increase_score(character, record, record_int, score, score_int, hit_sound, body_texture, tail_texture);
+            if (character.size() == POS*POS) win_scene(window, eightbit_font);
         }
 
         if (check_collision(character)) {

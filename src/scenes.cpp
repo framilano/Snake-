@@ -1,10 +1,3 @@
-#include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
-#include <TGUI/Widgets/RadioButton.hpp>
-#include <TGUI/Layout.hpp>
-#include <TGUI/TGUI.hpp>
-#include <iostream>
-#include <fstream>
 #include "headers/scenes.hpp"
 
 void welcome_scene(sf::RenderWindow &window, sf::RectangleShape &background, sf::Font &eightbit_font, int &chosen_difficulty) {
@@ -188,4 +181,19 @@ void options_scene(sf::RenderWindow &window, sf::RectangleShape &background, sf:
         window.display();
     }
     check_radios(gui, radio_vector);
+}
+
+void win_scene(sf::RenderWindow &window, sf::Font &eightbit_font) {
+    window.display();
+    sf::Event event;
+    sf::Text win_msg("You won!", eightbit_font, 100);
+    win_msg.setOrigin(sf::Vector2f(win_msg.getLocalBounds().width/2, win_msg.getLocalBounds().height/2));
+    win_msg.setPosition(sf::Vector2f(WIN_WIDTH/2, WIN_HEIGHT*0.3));
+    window.draw(win_msg);
+    window.display();
+    while (window.waitEvent(event)) {
+        if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Escape) window.close();
+    }
+    window.clear();
+    return;
 }
