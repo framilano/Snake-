@@ -5,18 +5,6 @@
 #include <cstdlib>
 #include "headers/scenes.hpp"
 
-#ifdef _WIN32
-const std::string ASSETS_FD = "assets\\";
-const std::string CONFIGS_FD = "configs\\";
-const char* DIFFIC_EXEC = "difficultyChooser.exe";
-#endif
-
-#ifdef __linux__
-const std::string ASSETS_FD = "assets/";
-const std::string CONFIGS_FD = "configs/";
-const char* DIFFIC_EXEC = "./difficultyChooser";
-#endif
-
 /**
 * Checking and teleporting the player if he goes over game field limits
 *  @param character first element of the character array
@@ -173,23 +161,6 @@ void update_record(int& record_int) {
     return;
 }
 
-int check_difficulty() {
-    std::fstream difficulty_file;
-    difficulty_file.open(CONFIGS_FD + "difficulty.txt", std::ios::out | std::ios::in);
-    if (difficulty_file.fail()) {
-        std::cout << "Non esiste difficulty.txt\n";
-        difficulty_file.close();
-        difficulty_file.open(CONFIGS_FD + "difficulty.txt", std::fstream::out);
-        difficulty_file << "0";
-        difficulty_file.close();
-        return 0;
-    }
-    std::string saved_difficulty;
-    difficulty_file >> saved_difficulty;
-    difficulty_file.close();
-    return std::stoi(saved_difficulty);
-}
-
 
 int main() {
     //Window, background and font
@@ -202,8 +173,13 @@ int main() {
     background.setTexture(&background_texture);
 
     std::vector<float> difficulties = {0.2, 0.15, 0.10, 0.05};
+    //Check current difficulty chosen
+    int chosen_difficulty = check_difficulty();
 
-    welcome_scene(window, background, eightbit_font);
+    welcome_scene(window, background, eightbit_font, chosen_difficulty);
+
+    //Check updated difficulty
+    chosen_difficulty = check_difficulty();
 
     //Background&Gamefield
     sf::RectangleShape gamefield(sf::Vector2f(GF_LENGTH, GF_LENGTH));
@@ -263,7 +239,7 @@ int main() {
 
     //Defining first character rotation, useful to decide where to move the character sprite
     int current_rotation = 0;
-    int chosen_difficulty = check_difficulty();
+    
     while (window.isOpen()) {
         sf::sleep(sf::seconds(difficulties[chosen_difficulty]));
         sf::Event event;

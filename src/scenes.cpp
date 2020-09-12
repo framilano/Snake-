@@ -1,13 +1,13 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
-#include <iostream>
-#include <fstream>
 #include <TGUI/Widgets/RadioButton.hpp>
 #include <TGUI/Layout.hpp>
 #include <TGUI/TGUI.hpp>
+#include <iostream>
+#include <fstream>
 #include "headers/scenes.hpp"
 
-void welcome_scene(sf::RenderWindow &window, sf::RectangleShape &background, sf::Font &eightbit_font) {
+void welcome_scene(sf::RenderWindow &window, sf::RectangleShape &background, sf::Font &eightbit_font, int &chosen_difficulty) {
     
     sf::Text title_msg("SnakePlusPlus", eightbit_font, 100);
     sf::Text enter_msg("Press Enter to play\nPress O for options\nPress ESC to exit", eightbit_font, 70);
@@ -24,7 +24,7 @@ void welcome_scene(sf::RenderWindow &window, sf::RectangleShape &background, sf:
         window.display();
         while (window.waitEvent(event)) {
             if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Escape) window.close();
-            if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::O) options_scene(window, background, eightbit_font);
+            if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::O) options_scene(window, background, eightbit_font, chosen_difficulty);
             if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Enter) start_game = 1;
             break;  
         }
@@ -69,8 +69,8 @@ int lost_scene(sf::RenderWindow &window, sf::Music &astro_music, sf::Font &eight
     return 0;
 }
 
-void create_radios(tgui::Gui &gui, sf::Font &eightbit_font) {
-    tgui::Layout2d layout(sf::Vector2f(30, 30));
+void create_radios(tgui::Gui &gui, sf::Font &eightbit_font, int &chosen_difficulty, std::vector<tgui::RadioButton::Ptr> &radio_vector) {
+    tgui::Layout2d layout(sf::Vector2f(20, 20));
     sf::String option0text("Easy");
     sf::String option1text("Medium");
     sf::String option2text("Hard");
@@ -95,42 +95,97 @@ void create_radios(tgui::Gui &gui, sf::Font &eightbit_font) {
     option1->setTextSize(30);
     option2->setTextSize(30);
     option3->setTextSize(30);
+    switch (chosen_difficulty) {
+        case 0:
+        option0->setChecked(true);
+        break;
+        case 1:
+        option1->setChecked(true);
+        break;
+        case 2:
+        option2->setChecked(true);
+        break;
+        case 3:
+        option3->setChecked(true);
+        break;
+    }
     gui.add(option0);
     gui.add(option1);
     gui.add(option2);
     gui.add(option3);
+    radio_vector[0] = option0;
+    radio_vector[1] = option1;
+    radio_vector[2] = option2;
+    radio_vector[3] = option3;
     return;
 }
 
-void options_scene(sf::RenderWindow &window, sf::RectangleShape &background, sf::Font &eightbit_font) {
-    window.clear();
-    tgui::Gui gui{window}; // Create the gui and attach it to the window
+int check_difficulty() {
+    std::fstream difficulty_file;
+    difficulty_file.open(CONFIGS_FD + "difficulty.txt", std::ios::out | std::ios::in);
+    if (difficulty_file.fail()) {
+        std::cout << "Non esiste difficulty.txt\n";
+        difficulty_file.close();
+        difficulty_file.open(CONFIGS_FD + "difficulty.txt", std::fstream::out);
+        difficulty_file << "0";
+        difficulty_file.close();
+        return 0;
+    }
+    std::string saved_difficulty;
+    difficulty_file >> saved_difficulty;
+    difficulty_file.close();
+    return std::stoi(saved_difficulty);
+}
+
+void update_difficulty_file(int &i) {
+    std::fstream difficulty_file;
+    difficulty_file.open(CONFIGS_FD + "difficulty.txt", std::fstream::out | std::fstream::trunc);
+    difficulty_file << std::to_string(i);
+    difficulty_file.close();
+    return;
+}
+
+void check_radios(tgui::Gui &gui, std::vector<tgui::RadioButton::Ptr> &radio_vector) {
+    for (int i = 0; i < 4; i++) {
+        if (radio_vector[i]->isChecked() == true) update_difficulty_file(i);
+    }
+    return;
+}
+
+void options_scene(sf::RenderWindow &window, sf::RectangleShape &background, sf::Font &eightbit_font, int &chosen_difficulty) {
+    chosen_difficulty = check_difficulty();
+    
+    tgui::Gui gui(window); // Create the gui and attach it to the window
+    sf::Text options_msg("Options", eightbit_font, 70);
+    sf::Text difficulty_msg("Difficulty", eightbit_font, 50);
 
     //setting title
-    sf::Text options_msg("Options", eightbit_font, 70);
     options_msg.setOrigin(sf::Vector2f(options_msg.getLocalBounds().width/2, options_msg.getLocalBounds().height/2));
     options_msg.setPosition(sf::Vector2f(WIN_WIDTH/2, WIN_HEIGHT*0.1));
     //Setting difficulty title
-    sf::Text difficulty_msg("Difficulty", eightbit_font, 50);
     difficulty_msg.setOrigin(sf::Vector2f(difficulty_msg.getLocalBounds().width/2, difficulty_msg.getLocalBounds().height/2));
     difficulty_msg.setPosition(sf::Vector2f(WIN_WIDTH/4, WIN_HEIGHT*0.2));
     
-    //Creating radiobuttons
-    create_radios(gui, eightbit_font);
-    int exit_options = 0;
+    //Creating radiobuttons and saving their pointers inside a vector
+    std::vector<tgui::RadioButton::Ptr> radio_vector(4);
+    create_radios(gui, eightbit_font, chosen_difficulty, radio_vector);
+
+    bool exit_options = false;
     while (window.isOpen())
     {
         sf::Event event;
+        window.clear();
         window.draw(background);
         window.draw(options_msg);
         window.draw(difficulty_msg);
         while (window.pollEvent(event))
         {
-            if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Escape) exit_options = 1;
+            if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Escape) exit_options = true;
             gui.handleEvent(event); // Pass the event to the widgets
         }
         if(exit_options) break;
         gui.draw(); // Draw all widgets
         window.display();
     }
+    check_radios(gui, radio_vector);
 }
