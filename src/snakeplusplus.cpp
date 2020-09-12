@@ -3,7 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
-#include "headers/scenes.h"
+#include "headers/scenes.hpp"
 
 #ifdef _WIN32
 const std::string ASSETS_FD = "assets\\";
