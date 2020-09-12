@@ -172,7 +172,7 @@ int main() {
     background_texture.loadFromFile(ASSETS_FD + "background.jpg");
     background.setTexture(&background_texture);
 
-    std::vector<float> difficulties = {0.2, 0.15, 0.10, 0.05};
+    std::vector<float> difficulties = {0.3, 0.2, 0.15, 0.1};
     //Check current difficulty chosen
     int chosen_difficulty = check_difficulty();
 
