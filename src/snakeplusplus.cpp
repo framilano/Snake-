@@ -192,8 +192,6 @@ int check_difficulty() {
 
 
 int main() {
-    //Launching difficulty chooser
-    system(DIFFIC_EXEC);
     //Window, background and font
     sf::RenderWindow window(sf::VideoMode(WIN_WIDTH, WIN_HEIGHT), "SnakePlusPlus", sf::Style::Default);
     sf::RectangleShape background(sf::Vector2f(WIN_WIDTH, WIN_HEIGHT));
