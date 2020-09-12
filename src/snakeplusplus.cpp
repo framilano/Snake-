@@ -8,11 +8,13 @@
 #ifdef _WIN32
 const std::string ASSETS_FD = "assets\\";
 const std::string CONFIGS_FD = "configs\\";
+const char* DIFFIC_EXEC = "difficultyChooser.exe";
 #endif
 
 #ifdef __linux__
 const std::string ASSETS_FD = "assets/";
 const std::string CONFIGS_FD = "configs/";
+const char* DIFFIC_EXEC = "./difficultyChooser";
 #endif
 
 /**
@@ -59,7 +61,7 @@ void spawn_apple(std::vector<std::vector<sf::Vector2f>>& food_positions, std::ve
         poss_x = rand() % POS;
         poss_y = rand() % POS;
         empty = true;
-        for (int i = 0; i < character.size(); i++) {
+        for (int i = 0; i < (int)character.size(); i++) {
             if (food_positions[poss_x][poss_y] == character[i].getPosition()) empty = false;
         }
     }
@@ -81,13 +83,13 @@ void increase_score(std::vector<sf::Sprite>& character, sf::Text& record, int& r
     sf::Text& score, int& score_int, sf::Sound& hit_sound, sf::Texture& body_texture, sf::Texture& tail_texture) {
     hit_sound.play();
     score_int += 1;
-    score.setString("Score  " + std::to_string(score_int));
+    score.setString("Score    " + std::to_string(score_int));
     if (score_int > record_int) {
         record_int = score_int;
         record.setString("Record " + std::to_string(record_int));
     }
 
-    for (int i = 1; i < character.size(); i++) character[i].setTexture(body_texture);
+    for (int i = 1; i < (int)character.size(); i++) character[i].setTexture(body_texture);
 
     sf::Sprite new_piece;
     new_piece.setOrigin(PG_LENGTH / 2, PG_LENGTH / 2);
@@ -102,7 +104,7 @@ void increase_score(std::vector<sf::Sprite>& character, sf::Text& record, int& r
 *   @param character character vector
 **/
 void update_charpositions(std::vector<sf::Sprite>& character) {
-    for (int i = character.size() - 1; i > 0; i--) {
+    for (int i = (int)character.size() - 1; i > 0; i--) {
         character[i].setPosition(character[i - 1].getPosition());
         character[i].setRotation(character[i - 1].getRotation());
     }
@@ -116,7 +118,7 @@ void update_charpositions(std::vector<sf::Sprite>& character) {
 *   @return true if hit, false if not
 **/
 bool check_collision(std::vector<sf::Sprite>& character) {
-    for (int i = 1; i < character.size(); i++) {
+    for (int i = 1; i < (int)character.size(); i++) {
         if (character.front().getPosition() == character[i].getPosition()) return true;
     }
     return false;
@@ -133,7 +135,7 @@ void restart_game(std::vector<sf::Sprite>& character, int& score_int, sf::Text& 
     astro_music.stop();
     astro_music.play();
     score_int = 0;
-    score.setString("Score  " + std::to_string(score_int));
+    score.setString("Score    " + std::to_string(score_int));
     character.erase(character.begin() + 1, character.begin() + character.size());
 }
 
@@ -171,9 +173,27 @@ void update_record(int& record_int) {
     return;
 }
 
+int check_difficulty() {
+    std::fstream difficulty_file;
+    difficulty_file.open(CONFIGS_FD + "difficulty.txt", std::ios::out | std::ios::in);
+    if (difficulty_file.fail()) {
+        std::cout << "Non esiste difficulty.txt\n";
+        difficulty_file.close();
+        difficulty_file.open(CONFIGS_FD + "difficulty.txt", std::fstream::out);
+        difficulty_file << "0";
+        difficulty_file.close();
+        return 0;
+    }
+    std::string saved_difficulty;
+    difficulty_file >> saved_difficulty;
+    difficulty_file.close();
+    return std::stoi(saved_difficulty);
+}
+
 
 int main() {
-
+    //Launching difficulty chooser
+    system(DIFFIC_EXEC);
     //Window, background and font
     sf::RenderWindow window(sf::VideoMode(WIN_WIDTH, WIN_HEIGHT), "SnakePlusPlus", sf::Style::Default);
     sf::RectangleShape background(sf::Vector2f(WIN_WIDTH, WIN_HEIGHT));
@@ -182,6 +202,8 @@ int main() {
     eightbit_font.loadFromFile(ASSETS_FD + "8bitwonder.ttf");
     background_texture.loadFromFile(ASSETS_FD + "background.jpg");
     background.setTexture(&background_texture);
+
+    std::vector<float> difficulties = {0.2, 0.15, 0.10, 0.05};
 
     welcome_scene(window, background, eightbit_font);
 
@@ -192,7 +214,7 @@ int main() {
     gamefield.setPosition(sf::Vector2f(WIN_WIDTH / 2, WIN_HEIGHT / 2));
 
     //Parsing and setting record from record.txt
-    sf::Text score("Score  0", eightbit_font, 50);
+    sf::Text score("Score    0", eightbit_font, 50);
     sf::Text record("", eightbit_font, 50);
     int score_int = 0;
     int record_int = parse_record();
@@ -243,9 +265,9 @@ int main() {
 
     //Defining first character rotation, useful to decide where to move the character sprite
     int current_rotation = 0;
-
+    int chosen_difficulty = check_difficulty();
     while (window.isOpen()) {
-        sf::sleep(sf::seconds(0.20));
+        sf::sleep(sf::seconds(difficulties[chosen_difficulty]));
         sf::Event event;
 
         update_charpositions(character);
@@ -300,7 +322,7 @@ int main() {
         window.draw(gamefield);
         window.draw(score);
         window.draw(record);
-        for (int i = 0; i < character.size(); i++) {
+        for (int i = 0; i < (int)character.size(); i++) {
             window.draw(character[i]);
         }
         window.draw(food);
