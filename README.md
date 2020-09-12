@@ -25,6 +25,11 @@ g++ -Wall -g scenes.cpp headers/scenes.h snakeplusplus.cpp -lsfml-audio -lsfml-g
 ```
 4. You need to place the compiled executable near assets and configs folders to run it, like this
 ![Folders placement example](https://i.imgur.com/73hCPWa.png)
+6. To create difficultChooser executable you need to built it and place it near SnakePlusPlus executable, to build it
+```
+pyinstaller difficultyChooser.py --onefile
+```
+
 
 ## Build Instructions: Windows
 1. Clone this repo
@@ -40,3 +45,7 @@ To build SnakePlusPlus I highly suggest to use Visual Studio 2019
 ![Solution Explorer](https://i.imgur.com/M6nKAjL.png)
 5. Run in Release x86 mode after compiling the project, the new compiled executable will now appear in \Release
 6. Add next to the executable both assets and configs folders
+7. To create difficultChooser executable you need to built it and place it near SnakePlusPlus executable, to build it
+```
+pyinstaller difficultyChooser.py --onefile --noconsole
+```
