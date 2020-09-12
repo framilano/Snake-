@@ -51,7 +51,7 @@ int lost_scene(sf::RenderWindow &window, sf::Music &astro_music, sf::Font &eight
     sf::Event event;
     sf::Text lost_msg("You lost\n\nPress R to retry or ESC to exit", eightbit_font, 50);
     lost_msg.setOrigin(sf::Vector2f(lost_msg.getLocalBounds().width/2, lost_msg.getLocalBounds().height/2));
-    lost_msg.setPosition(sf::Vector2f(WIN_WIDTH/2, WIN_HEIGHT*0.3));
+    lost_msg.setPosition(sf::Vector2f(WIN_WIDTH/2, WIN_HEIGHT*0.5));
     window.draw(lost_msg);
     window.display();
     while (window.waitEvent(event)) {

@@ -1,7 +1,7 @@
 #ifndef SCENES_HPP
 #define SCENES_HPP
 
-
+#include <SFML/Window/Joystick.hpp>
 #include <TGUI/Widgets/RadioButton.hpp>
 #include <TGUI/Layout.hpp>
 #include <SFML/Graphics.hpp>
